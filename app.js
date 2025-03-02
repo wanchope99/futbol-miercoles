@@ -58,13 +58,13 @@ loginButton.addEventListener('click', () => {
     const password = passwordInput.value;
     
     if (!email || !password) {
-        alert('Please enter both email and password');
+        alert('Por favor ingresa correo electrónico y contraseña');
         return;
     }
     
     auth.signInWithEmailAndPassword(email, password)
         .catch(error => {
-            alert(`Login failed: ${error.message}`);
+            alert(`Error al iniciar sesión: ${error.message}`);
         });
 });
 
@@ -73,7 +73,7 @@ registerButton.addEventListener('click', () => {
     const password = passwordInput.value;
     
     if (!email || !password) {
-        alert('Please enter both email and password');
+        alert('Por favor ingresa correo electrónico y contraseña');
         return;
     }
     
@@ -89,7 +89,7 @@ registerButton.addEventListener('click', () => {
             });
         })
         .catch(error => {
-            alert(`Registration failed: ${error.message}`);
+            alert(`Error al registrarse: ${error.message}`);
         });
 });
 
@@ -134,7 +134,7 @@ function loadUserProfile() {
             }
         })
         .catch(error => {
-            console.error("Error loading profile:", error);
+            console.error("Error al cargar perfil:", error);
         });
 }
 
@@ -148,10 +148,10 @@ saveProfileButton.addEventListener('click', () => {
     
     db.collection('profiles').doc(currentUser.uid).update(profile)
         .then(() => {
-            alert('Profile saved successfully!');
+            alert('¡Perfil guardado exitosamente!');
         })
         .catch(error => {
-            alert(`Error saving profile: ${error.message}`);
+            alert(`Error al guardar perfil: ${error.message}`);
         });
 });
 
@@ -160,7 +160,7 @@ function loadPlayerList() {
     db.collection('profiles').get()
         .then(snapshot => {
             // Clear existing options except the placeholder
-            playerSelect.innerHTML = '<option value="">Choose a player...</option>';
+            playerSelect.innerHTML = '<option value="">Elige un jugador...</option>';
             allPlayers = [];
             
             snapshot.forEach(doc => {
@@ -180,7 +180,7 @@ function loadPlayerList() {
             });
         })
         .catch(error => {
-            console.error("Error loading players:", error);
+            console.error("Error al cargar jugadores:", error);
         });
 }
 
@@ -189,7 +189,7 @@ playerSelect.addEventListener('change', () => {
     
     if (selectedPlayerId) {
         currentRatingPlayer = allPlayers.find(player => player.id === selectedPlayerId);
-        ratingPlayerName.textContent = `Rating: ${currentRatingPlayer.name || currentRatingPlayer.email}`;
+        ratingPlayerName.textContent = `Calificando: ${currentRatingPlayer.name || currentRatingPlayer.email}`;
         
         // Check if user has already rated this player
         db.collection('ratings')
@@ -220,7 +220,7 @@ playerSelect.addEventListener('change', () => {
                 ratingForm.style.display = 'block';
             })
             .catch(error => {
-                console.error("Error checking existing ratings:", error);
+                console.error("Error al verificar calificaciones existentes:", error);
             });
     } else {
         ratingForm.style.display = 'none';
@@ -238,7 +238,7 @@ document.querySelectorAll('.rating-slider').forEach(slider => {
 
 submitRatingButton.addEventListener('click', () => {
     if (!currentRatingPlayer) {
-        alert('Please select a player to rate');
+        alert('Por favor selecciona un jugador para calificar');
         return;
     }
     
@@ -272,13 +272,13 @@ submitRatingButton.addEventListener('click', () => {
             }
         })
         .then(() => {
-            alert('Rating submitted successfully!');
+            alert('¡Calificación enviada exitosamente!');
             playerSelect.value = '';
             ratingForm.style.display = 'none';
             currentRatingPlayer = null;
         })
         .catch(error => {
-            alert(`Error submitting rating: ${error.message}`);
+            alert(`Error al enviar calificación: ${error.message}`);
         });
 });
 
@@ -300,7 +300,7 @@ function loadAllProfiles() {
             return allPlayers;
         })
         .catch(error => {
-            console.error("Error loading all profiles:", error);
+            console.error("Error al cargar todos los perfiles:", error);
             return [];
         });
 }
@@ -322,7 +322,7 @@ function generateAllCards() {
                 cardsContainer.appendChild(card);
             })
             .catch(error => {
-                console.error(`Error generating card for ${player.name}:`, error);
+                console.error(`Error al generar tarjeta para ${player.name}:`, error);
             });
     });
 }
@@ -375,7 +375,7 @@ function createPlayerCard(player, ratings) {
     cardDiv.innerHTML = `
         <div class="card-header">
             <img src="${photoUrl}" alt="${player.name}" class="card-photo">
-            <h3>${player.name || 'Player'}</h3>
+            <h3>${player.name || 'Jugador'}</h3>
             <p>${player.nickname || ''}</p>
         </div>
         <div class="card-body">
@@ -390,7 +390,7 @@ function createPlayerCard(player, ratings) {
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">${ratings.tecnica}</div>
-                    <div class="stat-label">Tecnica</div>
+                    <div class="stat-label">Técnica</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">${ratings.cabezazo}</div>
@@ -419,7 +419,7 @@ function createPlayerCard(player, ratings) {
             </div>
         </div>
         <div class="card-footer">
-            <strong>Overall Rating: ${ratings.overall}</strong>
+            <strong>Calificación General: ${ratings.overall}</strong>
         </div>
     `;
     
