@@ -131,12 +131,77 @@ function loadUserProfile() {
                 profileName.value = data.name || '';
                 profileNickname.value = data.nickname || '';
                 profilePhoto.value = data.photoUrl || '';
+                
+                // Cargar atributos promedio
+                loadAverageAttributes(currentUser.uid).then(attributes => {
+                    document.getElementById('profile-tiro').textContent = attributes.tiro;
+                    document.getElementById('profile-pase').textContent = attributes.pase;
+                    document.getElementById('profile-tecnica').textContent = attributes.tecnica;
+                    document.getElementById('profile-cabezazo').textContent = attributes.cabezazo;
+                    document.getElementById('profile-ataque').textContent = attributes.ataque;
+                    document.getElementById('profile-defensa').textContent = attributes.defensa;
+                    document.getElementById('profile-resistencia').textContent = attributes.resistencia;
+                    document.getElementById('profile-arquero').textContent = attributes.arquero;
+                    document.getElementById('profile-mentalidad').textContent = attributes.mentalidad;
+                });
             }
         })
         .catch(error => {
             console.error("Error al cargar perfil:", error);
         });
 }
+
+function loadAverageAttributes(playerId) {
+    return db.collection('ratings')
+        .where('playerId', '==', playerId)
+        .get()
+        .then(snapshot => {
+            const ratings = snapshot.docs.map(doc => doc.data());
+            const averages = calculateAverages(ratings);
+            return averages;
+        })
+        .catch(error => {
+            console.error("Error al cargar atributos promedio:", error);
+            return {
+                tiro: 0, pase: 0, tecnica: 0, cabezazo: 0, ataque: 0,
+                defensa: 0, resistencia: 0, arquero: 0, mentalidad: 0
+            };
+        });
+}
+
+function calculateAverages(ratings) {
+    if (!ratings.length) return {
+        tiro: 0, pase: 0, tecnica: 0, cabezazo: 0, ataque: 0,
+        defensa: 0, resistencia: 0, arquero: 0, mentalidad: 0
+    };
+    
+    const attributes = [
+        'tiro', 'pase', 'tecnica', 'cabezazo', 'ataque',
+        'defensa', 'resistencia', 'arquero', 'mentalidad'
+    ];
+    
+    const sums = {};
+    let totalSum = 0;
+    
+    // Initialize sums
+    attributes.forEach(attr => sums[attr] = 0);
+    
+    // Calculate sums
+    ratings.forEach(rating => {
+        attributes.forEach(attr => {
+            sums[attr] += rating[attr] || 0;
+        });
+    });
+    
+    // Calculate averages
+    const averages = {};
+    attributes.forEach(attr => {
+        averages[attr] = Math.round((sums[attr] / ratings.length) * 10) / 10;
+    });
+    
+    return averages;
+}
+
 
 saveProfileButton.addEventListener('click', () => {
     const profile = {
@@ -276,11 +341,17 @@ submitRatingButton.addEventListener('click', () => {
             playerSelect.value = '';
             ratingForm.style.display = 'none';
             currentRatingPlayer = null;
+            
+            // Actualizar perfil automáticamente
+            if (currentUser.uid === currentRatingPlayer.id) {
+                loadUserProfile();
+            }
         })
         .catch(error => {
             alert(`Error al enviar calificación: ${error.message}`);
         });
 });
+
 
 // Player Cards Functions
 generateCardsButton.addEventListener('click', () => {
