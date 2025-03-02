@@ -122,6 +122,58 @@ function showTab(tabName) {
     }
 }
 
+
+// Cargar lista de usuarios
+function loadUserList() {
+    db.collection('profiles').get()
+        .then(snapshot => {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            
+            snapshot.forEach(doc => {
+                const user = {
+                    id: doc.id,
+                    ...doc.data()
+                };
+                
+                const userElement = document.createElement('div');
+                userElement.innerHTML = `
+                    <span>${user.name || user.email}</span>
+                    <button class="delete-user-button" data-user-id="${user.id}">Eliminar</button>
+                `;
+                userList.appendChild(userElement);
+            });
+        })
+        .catch(error => {
+            console.error("Error al cargar lista de usuarios:", error);
+        });
+}
+
+document.getElementById('load-users-button').addEventListener('click', loadUserList);
+
+document.getElementById('nav-admin').addEventListener('click', () => showTab('admin'));
+
+function showTab(tabName) {
+    // Update navigation buttons
+    navProfile.classList.toggle('active', tabName === 'profile');
+    navRate.classList.toggle('active', tabName === 'rate');
+    navCards.classList.toggle('active', tabName === 'cards');
+    document.getElementById('nav-admin').classList.toggle('active', tabName === 'admin');
+    
+    // Show/hide tabs
+    profileTab.style.display = tabName === 'profile' ? 'block' : 'none';
+    rateTab.style.display = tabName === 'rate' ? 'block' : 'none';
+    cardsTab.style.display = tabName === 'cards' ? 'block' : 'none';
+    adminTab.style.display = tabName === 'admin' ? 'block' : 'none';
+    
+    // Specific actions for each tab
+    if (tabName === 'admin') {
+        loadUserList();
+    }
+}
+
+
+
 // Profile Functions
 function loadUserProfile() {
     db.collection('profiles').doc(currentUser.uid).get()
@@ -182,6 +234,26 @@ function calculateAverages(ratings) {
     
     const sums = {};
     let totalSum = 0;
+
+    // Agregar evento a botones de eliminar usuarios
+document.addEventListener('click', event => {
+    if (event.target.classList.contains('delete-user-button')) {
+        const userId = event.target.getAttribute('data-user-id');
+        
+        if (confirm(`¿Estás seguro de eliminar al usuario con ID ${userId}?`)) {
+            // Eliminar usuario de la base de datos
+            db.collection('profiles').doc(userId).delete()
+                .then(() => {
+                    alert('Usuario eliminado con éxito');
+                    loadUserList(); // Recargar lista de usuarios
+                })
+                .catch(error => {
+                    alert(`Error al eliminar usuario: ${error.message}`);
+                });
+        }
+    }
+});
+
     
     // Initialize sums
     attributes.forEach(attr => sums[attr] = 0);
