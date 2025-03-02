@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Rating App</title>
+    <title>App de Calificación de Jugadores</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -11,15 +11,15 @@
     <div id="app">
         <!-- Authentication Section -->
         <div id="auth-section" class="section">
-            <h1>Player Rating App</h1>
+            <h1>App de Calificación de Jugadores</h1>
             <div id="login-container">
                 <div id="login-form">
-                    <h2>Login or Register</h2>
-                    <input type="email" id="email-input" placeholder="Email" required>
-                    <input type="password" id="password-input" placeholder="Password" required>
+                    <h2>Iniciar Sesión o Registrarse</h2>
+                    <input type="email" id="email-input" placeholder="Correo Electrónico" required>
+                    <input type="password" id="password-input" placeholder="Contraseña" required>
                     <div class="button-group">
-                        <button id="login-button">Login</button>
-                        <button id="register-button">Register</button>
+                        <button id="login-button">Iniciar Sesión</button>
+                        <button id="register-button">Registrarse</button>
                     </div>
                 </div>
             </div>
@@ -28,48 +28,48 @@
         <!-- Main App Section (hidden until logged in) -->
         <div id="main-section" class="section" style="display: none;">
             <header>
-                <h1>Player Rating App</h1>
-                <button id="logout-button">Logout</button>
+                <h1>App de Calificación de Jugadores</h1>
+                <button id="logout-button">Cerrar Sesión</button>
             </header>
             
             <nav>
-                <button id="nav-profile" class="nav-button active">My Profile</button>
-                <button id="nav-rate" class="nav-button">Rate Players</button>
-                <button id="nav-cards" class="nav-button">Player Cards</button>
+                <button id="nav-profile" class="nav-button active">Mi Perfil</button>
+                <button id="nav-rate" class="nav-button">Calificar Jugadores</button>
+                <button id="nav-cards" class="nav-button">Tarjetas de Jugadores</button>
             </nav>
             
             <!-- My Profile Tab -->
             <div id="profile-tab" class="tab-content">
-                <h2>My Profile</h2>
+                <h2>Mi Perfil</h2>
                 <div id="profile-form">
                     <div class="input-group">
-                        <label for="profile-name">Full Name</label>
-                        <input type="text" id="profile-name" placeholder="Your name">
+                        <label for="profile-name">Nombre Completo</label>
+                        <input type="text" id="profile-name" placeholder="Tu nombre">
                     </div>
                     <div class="input-group">
-                        <label for="profile-nickname">Nickname</label>
-                        <input type="text" id="profile-nickname" placeholder="Your nickname">
+                        <label for="profile-nickname">Apodo</label>
+                        <input type="text" id="profile-nickname" placeholder="Tu apodo">
                     </div>
                     <div class="input-group">
-                        <label for="profile-photo">Profile Photo URL</label>
-                        <input type="url" id="profile-photo" placeholder="https://example.com/photo.jpg">
+                        <label for="profile-photo">URL de Foto de Perfil</label>
+                        <input type="url" id="profile-photo" placeholder="https://ejemplo.com/foto.jpg">
                     </div>
-                    <button id="save-profile">Save Profile</button>
+                    <button id="save-profile">Guardar Perfil</button>
                 </div>
             </div>
             
             <!-- Rate Players Tab -->
             <div id="rate-tab" class="tab-content" style="display: none;">
-                <h2>Rate Players</h2>
+                <h2>Calificar Jugadores</h2>
                 <div id="player-selection">
-                    <label for="player-select">Select a player to rate:</label>
+                    <label for="player-select">Selecciona un jugador para calificar:</label>
                     <select id="player-select">
-                        <option value="">Choose a player...</option>
+                        <option value="">Elige un jugador...</option>
                     </select>
                 </div>
                 
                 <div id="rating-form" style="display: none;">
-                    <h3 id="rating-player-name">Rating: Player Name</h3>
+                    <h3 id="rating-player-name">Calificando: Nombre del Jugador</h3>
                     
                     <div class="attributes-container">
                         <div class="attribute-group">
@@ -89,7 +89,7 @@
                         </div>
                         
                         <div class="attribute-group">
-                            <label>Tecnica</label>
+                            <label>Técnica</label>
                             <div class="rating-control">
                                 <input type="range" min="1" max="10" value="5" class="rating-slider" id="rating-tecnica">
                                 <span class="rating-value">5</span>
@@ -145,14 +145,14 @@
                         </div>
                     </div>
                     
-                    <button id="submit-rating">Submit Rating</button>
+                    <button id="submit-rating">Enviar Calificación</button>
                 </div>
             </div>
             
             <!-- Player Cards Tab -->
             <div id="cards-tab" class="tab-content" style="display: none;">
-                <h2>Player Cards</h2>
-                <button id="generate-cards">Generate All Player Cards</button>
+                <h2>Tarjetas de Jugadores</h2>
+                <button id="generate-cards">Generar Todas las Tarjetas</button>
                 
                 <div id="cards-container"></div>
             </div>
